@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <title>Todo List</title>
+  </head>
+  <body>
+    <div class="form-section mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col col-8 mx-auto">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Добавить новую задачу</h5>
+                <form name="addTask">
+                  <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    class="form-control"
+                    placeholder="Заголовок"
+                  />
+                  <input
+                    type="text"
+                    name="body"
+                    id="body"
+                    class="form-control mt-3"
+                    placeholder="Текст"
+                  />
+                  <button type="submit" class="btn btn-primary mt-4">
+                    Добавить задачу
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tasks-list-section mt-5">
+      <div class="container">
+        <ul class="list-group">
+          <li class="list-group-item d-flex align-items-center flex-wrap mt-2">
+            <span>Мой заголовок</span>
+            <button class="btn btn-danger ml-auto delete-btn">Удалить</button>
+            <p class="mt-2 w-100">
+              Компьютер стал неотъемлемой частью жизни человека. Это обязательный
+              инструмент развития человека. Каждая большая и&nbsp;малая промышленность
+              компьютеризирована. Компьютеры выполнять свою работу эффективно, быстро
+              и&nbsp;продуктивно. Без сомнений, они сделали нашу жизнь намного легче.
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
