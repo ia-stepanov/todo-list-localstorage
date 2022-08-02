@@ -71,7 +71,8 @@ const tasks = [
       'd-flex',
       'align-items-center',
       'flex-wrap',
-      'mt-2'
+      'mt-2',
+      'my-2'
     );
     li.style.borderRadius = '0.25rem';
     li.style.boxShadow = `${completed ? '0 0 10px #007bff80' : ''}`;
@@ -187,8 +188,6 @@ const tasks = [
         parent.style.boxShadow = '0 0 10px #007bff80';
         objOfTasks[id].completed = true;
       }
-
-      console.log(objOfTasks[id]);
     }
   }
 
