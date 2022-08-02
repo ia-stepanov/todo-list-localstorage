@@ -27,7 +27,7 @@ const tasks = [
   },
 ];
 
-(function (arrOfTasks) {
+(function (arrOfTasks = []) {
   const objOfTasks = arrOfTasks.reduce((acc, task) => {
     acc[task._id] = task;
     return acc;
@@ -49,6 +49,8 @@ const tasks = [
       console.error('Передайте список задач!');
       return;
     }
+
+    addAlert(tasksList);
 
     const fragment = document.createDocumentFragment();
     Object.values(tasksList).forEach((task) => {
@@ -105,6 +107,7 @@ const tasks = [
     const listItem = listItemTemplate(task);
     listContainer.insertAdjacentElement('afterbegin', listItem);
     form.reset();
+    removeAlert();
   }
 
   function createNewTask(title, body) {
@@ -140,6 +143,30 @@ const tasks = [
       const id = parent.dataset.taskId;
       const confirmed = deleteTask(id);
       deleteTaskFromHtml(confirmed, parent);
+      addAlert(objOfTasks);
     }
+  }
+
+  function addAlert(tasksList) {
+    let isEmptyArrOfTasks = Object.entries(tasksList).length === 0;
+
+    if (!isEmptyArrOfTasks) return;
+    const alert = document.createElement('span');
+    alert.style.cssText = `
+    display: flex;
+    justify-content: center;
+    color: #808080;
+    font-size: 1.25rem;
+    `;
+    alert.dataset.alert = '';
+    alert.textContent = 'Массив с задачами пустой';
+    listContainer.insertAdjacentElement('afterend', alert);
+  }
+
+  function removeAlert() {
+    const alert = document.querySelector('[data-alert]');
+
+    if (!alert) return;
+    alert.remove();
   }
 })(tasks);
