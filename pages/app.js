@@ -174,15 +174,21 @@ const tasks = [
   // Обработчик чекбоксов
   function checkboxHandler({ target }) {
     if (target.classList.contains('custom-control-input')) {
-      const parentLi = target.closest('[data-task-id]');
+      const parent = target.closest('[data-task-id]');
+      const id = parent.dataset.taskId;
+      const confirmed = !target.checked;
 
-      if (!target.checked) {
-        parentLi.style.border = '';
-        parentLi.style.boxShadow = '';
+      if (confirmed) {
+        parent.style.border = '';
+        parent.style.boxShadow = '';
+        objOfTasks[id].completed = false;
       } else {
-        parentLi.style.border = '1px solid #007bff';
-        parentLi.style.boxShadow = '0 0 10px #007bff80';
+        parent.style.border = '1px solid #007bff';
+        parent.style.boxShadow = '0 0 10px #007bff80';
+        objOfTasks[id].completed = true;
       }
+
+      console.log(objOfTasks[id]);
     }
   }
 
