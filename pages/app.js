@@ -43,7 +43,9 @@ const tasks = [
   renderAllTasks(objOfTasks);
   form.addEventListener('submit', onFormSubmitHandler);
   listContainer.addEventListener('click', onDeleteHandler);
+  listContainer.addEventListener('click', checkboxHandler);
 
+  // Отрисовать все задачи
   function renderAllTasks(tasksList) {
     if (!tasksList) {
       console.error('Передайте список задач!');
@@ -61,7 +63,8 @@ const tasks = [
     listContainer.appendChild(fragment);
   }
 
-  function listItemTemplate({ _id, title, body } = {}) {
+  // Шаблон задачи
+  function listItemTemplate({ _id, completed, title, body } = {}) {
     const li = document.createElement('li');
     li.classList.add(
       'list-group-item',
@@ -70,28 +73,47 @@ const tasks = [
       'flex-wrap',
       'mt-2'
     );
-
+    li.style.borderRadius = '0.25rem';
+    li.style.boxShadow = `${completed ? '0 0 10px #007bff80' : ''}`;
+    li.style.border = `${completed ? '1px solid #007bff' : ''}`;
     li.setAttribute('data-task-id', _id);
 
-    const span = document.createElement('span');
-    span.textContent = title;
-    span.style.fontWeight = 'bold';
+    // const span = document.createElement('span');
+    // span.textContent = title;
+    // span.style.fontWeight = 'bold';
 
-    const deleteBtn = document.createElement('btn');
-    deleteBtn.textContent = 'Удалить';
-    deleteBtn.classList.add('btn', 'btn-danger', 'ml-auto', 'delete-btn');
+    // const deleteBtn = document.createElement('btn');
+    // deleteBtn.textContent = 'Удалить';
+    // deleteBtn.classList.add('btn', 'btn-danger', 'ml-auto', 'delete-btn');
 
-    const article = document.createElement('p');
-    article.textContent = body;
-    article.classList.add('mt-2', 'w-100');
+    // const article = document.createElement('p');
+    // article.textContent = body;
+    // article.classList.add('mt-2', 'w-100');
 
-    li.appendChild(span);
-    li.appendChild(deleteBtn);
-    li.appendChild(article);
+    // li.appendChild(span);
+    // // li.appendChild(inputCheck);
+    // li.appendChild(deleteBtn);
+    // li.appendChild(article);
 
+    const idCheck = `defaultCheck${Math.floor(Math.random() * (100000 - 1) + 1)}`;
+
+    li.innerHTML = `
+    <span style="font-weight: bold;">${title}</span>
+    <p class="mt-2 w-100">${body}</p>
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" ${
+        completed ? 'checked' : ''
+      } id="${idCheck}" >
+      <label class="custom-control-label" for="${idCheck}">Задача выполнена</label>
+    </div>
+    <btn class="btn btn-danger ml-auto delete-btn">Удалить</btn>
+    `;
+
+    // 2px solid #28a745;
     return li;
   }
 
+  // Добавить задачу в список задач
   function onFormSubmitHandler(e) {
     e.preventDefault();
 
@@ -110,6 +132,7 @@ const tasks = [
     removeAlert();
   }
 
+  // Создать новую задачу
   function createNewTask(title, body) {
     const newTask = {
       title,
@@ -123,6 +146,7 @@ const tasks = [
     return { ...newTask };
   }
 
+  // Удалить задачу
   function deleteTask(id) {
     const { title } = objOfTasks[id];
     const isConfirm = confirm(`Вы уверены, что хотите удалить задачу: ${title}?`);
@@ -147,6 +171,22 @@ const tasks = [
     }
   }
 
+  // Обработчик чекбоксов
+  function checkboxHandler({ target }) {
+    if (target.classList.contains('custom-control-input')) {
+      const parentLi = target.closest('[data-task-id]');
+
+      if (!target.checked) {
+        parentLi.style.border = '';
+        parentLi.style.boxShadow = '';
+      } else {
+        parentLi.style.border = '1px solid #007bff';
+        parentLi.style.boxShadow = '0 0 10px #007bff80';
+      }
+    }
+  }
+
+  // Добавить предупреждение
   function addAlert(tasksList) {
     let isEmptyArrOfTasks = Object.entries(tasksList).length === 0;
 
@@ -163,6 +203,7 @@ const tasks = [
     listContainer.insertAdjacentElement('afterend', alert);
   }
 
+  // Удалить предупреждение
   function removeAlert() {
     const alert = document.querySelector('[data-alert]');
 
