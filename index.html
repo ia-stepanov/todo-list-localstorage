@@ -25,6 +25,7 @@
         </select>
       </form>
     </nav>
+
     <div class="form-section mt-5">
       <div class="container">
         <div class="row">
@@ -47,6 +48,7 @@
                     class="form-control mt-3"
                     placeholder="Текст"
                   />
+
                   <button type="submit" class="btn btn-primary mt-4">
                     Добавить задачу
                   </button>
@@ -57,8 +59,16 @@
         </div>
       </div>
     </div>
-    <div class="tasks-list-section mt-5 mb-5">
-      <div class="container col-8">
+
+    <div class="container d-flex justify-content-center flex-wrap my-3">
+      <button type="button" class="btn btn-primary m-1">Показать все задачи</button>
+      <button type="button" class="btn btn-primary m-1">
+        Показать незавершенные задачи
+      </button>
+    </div>
+
+    <div class="tasks-list-section mb-5">
+      <div class="container">
         <ul class="list-group"></ul>
       </div>
     </div>
