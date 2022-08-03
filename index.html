@@ -10,10 +10,21 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="pages/styles.css" />
     <link rel="icon" href="images/favicon.png" type="image/png" />
     <title>Todo List</title>
   </head>
   <body>
+    <nav class="header navbar navbar-dark bg-primary">
+      <a class="navbar-brand">Todo List</a>
+      <form class="form-inline">
+        <select class="form-control form-control-sm" id="themeSelect">
+          <option value="default">Тема по умолчанию</option>
+          <option value="light">Светлая тема</option>
+          <option value="dark">Темная тема</option>
+        </select>
+      </form>
+    </nav>
     <div class="form-section mt-5">
       <div class="container">
         <div class="row">
@@ -47,7 +58,7 @@
       </div>
     </div>
     <div class="tasks-list-section mt-5 mb-5">
-      <div class="container w-50">
+      <div class="container col-8">
         <ul class="list-group"></ul>
       </div>
     </div>
