@@ -2,28 +2,26 @@ const tasks = [
   {
     _id: '5d2ca9e2e03d40b326596aa7',
     completed: true,
-    body: 'Occaecat non ea quis occaecat ad culpa amet deserunt incididunt elit fugiat pariatur. Exercitation commodo culpa in veniam proident laboris in. Excepteur cupidatat eiusmod dolor consectetur exercitation nulla aliqua veniam fugiat irure mollit. Eu dolor dolor excepteur pariatur aute do do ut pariatur consequat reprehenderit deserunt.\r\n',
-    title: 'Eu ea incididunt sunt consectetur fugiat non.',
+    body: 'Не&nbsp;причиняй никому боли обманом; твои мысли должны быть чистыми и&nbsp;справедливыми, так&nbsp;же как и&nbsp;слова.\r\n',
+    title: 'Честность',
   },
   {
     _id: '5d2ca9e29c8a94095c1288e0',
     completed: false,
-    body: 'Aliquip cupidatat ex adipisicing veniam do tempor. Lorem nulla adipisicing et esse cupidatat qui deserunt in fugiat duis est qui. Est adipisicing ipsum qui cupidatat exercitation. Cupidatat aliqua deserunt id deserunt excepteur nostrud culpa eu voluptate excepteur. Cillum officia proident anim aliquip. Dolore veniam qui reprehenderit voluptate non id anim.\r\n',
-    title:
-      'Deserunt laborum id consectetur pariatur veniam occaecat occaecat tempor voluptate pariatur nulla reprehenderit ipsum.',
+    body: 'Реши выполнить&nbsp;то, что должно; что решил&nbsp;&mdash; выполняй неуклонно.\r\n',
+    title: 'Решительность',
   },
   {
     _id: '5d2ca9e2e03d40b3232496aa7',
     completed: true,
-    body: 'Occaecat non ea quis occaecat ad culpa amet deserunt incididunt elit fugiat pariatur. Exercitation commodo culpa in veniam proident laboris in. Excepteur cupidatat eiusmod dolor consectetur exercitation nulla aliqua veniam fugiat irure mollit. Eu dolor dolor excepteur pariatur aute do do ut pariatur consequat reprehenderit deserunt.\r\n',
-    title: 'Eu ea incididunt sunt consectetur fugiat non.',
+    body: 'Не&nbsp;теряй времени попусту; занимайся чем-то полезным, что приносит пользу тебе и&nbsp;людям.\r\n',
+    title: 'Трудолюбие',
   },
   {
     _id: '5d2ca9e29c8a94095564788e0',
     completed: false,
-    body: 'Aliquip cupidatat ex adipisicing veniam do tempor. Lorem nulla adipisicing et esse cupidatat qui deserunt in fugiat duis est qui. Est adipisicing ipsum qui cupidatat exercitation. Cupidatat aliqua deserunt id deserunt excepteur nostrud culpa eu voluptate excepteur. Cillum officia proident anim aliquip. Dolore veniam qui reprehenderit voluptate non id anim.\r\n',
-    title:
-      'Deserunt laborum id consectetur pariatur veniam occaecat occaecat tempor voluptate pariatur nulla reprehenderit ipsum.',
+    body: 'Найди каждой вещи своё место, каждому делу&nbsp;&mdash; свое время.\r\n',
+    title: 'Порядок',
   },
 ];
 
@@ -97,7 +95,7 @@ const tasks = [
       '--input-focus-box-shadow': '0 0 0 0.2rem rgba(141, 143, 146, 0.25)',
     },
   };
-  let lastSelectedTheme = 'default';
+  let lastSelectedTheme = localStorage.getItem('app_theme') || 'default';
 
   // Elements UI
   const listContainer = document.querySelector('.tasks-list-section .list-group');
@@ -109,6 +107,7 @@ const tasks = [
   const btnShowUncompletedTasks = document.querySelectorAll('.btn.btn-primary.m-1')[1];
 
   // Events
+  setTheme(lastSelectedTheme);
   renderAllTasks(objOfTasks);
   form.addEventListener('submit', onFormSubmitHandler);
   listContainer.addEventListener('click', onDeleteHandler);
@@ -165,7 +164,7 @@ const tasks = [
     // article.classList.add('mt-2', 'w-100');
 
     // li.appendChild(span);
-    // // li.appendChild(inputCheck);
+    // li.appendChild(inputCheck);
     // li.appendChild(deleteBtn);
     // li.appendChild(article);
 
@@ -183,7 +182,6 @@ const tasks = [
     <btn class="btn btn-danger ml-auto delete-btn">Удалить</btn>
     `;
 
-    // 2px solid #28a745;
     return li;
   }
 
@@ -260,7 +258,6 @@ const tasks = [
         parent.style.border = '1px solid #007bff';
         parent.style.boxShadow = '0 0 10px #007bff80';
         objOfTasks[id].completed = true;
-        showUncompletedTasks();
       }
     }
   }
@@ -304,6 +301,7 @@ const tasks = [
 
     setTheme(selectedTheme);
     lastSelectedTheme = selectedTheme;
+    localStorage.setItem('app_theme', selectedTheme);
   }
 
   // Выбор светлой|темной темы
