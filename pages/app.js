@@ -105,6 +105,8 @@ const tasks = [
   const inputTitle = form.elements['title'];
   const inputBody = form.elements['body'];
   const themeSelect = document.getElementById('themeSelect');
+  const btnShowAllTasks = document.querySelectorAll('.btn.btn-primary.m-1')[0];
+  const btnShowUncompletedTasks = document.querySelectorAll('.btn.btn-primary.m-1')[1];
 
   // Events
   renderAllTasks(objOfTasks);
@@ -112,6 +114,8 @@ const tasks = [
   listContainer.addEventListener('click', onDeleteHandler);
   listContainer.addEventListener('click', checkboxHandler);
   themeSelect.addEventListener('change', onThemeSelectHandler);
+  btnShowAllTasks.addEventListener('click', showAllTasks);
+  btnShowUncompletedTasks.addEventListener('click', showUncompletedTasks);
 
   // Отрисовать все задачи
   function renderAllTasks(tasksList) {
@@ -123,6 +127,7 @@ const tasks = [
     addAlert(tasksList);
 
     const fragment = document.createDocumentFragment();
+
     Object.values(tasksList).forEach((task) => {
       const li = listItemTemplate(task);
       fragment.appendChild(li);
@@ -255,6 +260,7 @@ const tasks = [
         parent.style.border = '1px solid #007bff';
         parent.style.boxShadow = '0 0 10px #007bff80';
         objOfTasks[id].completed = true;
+        showUncompletedTasks();
       }
     }
   }
@@ -305,6 +311,33 @@ const tasks = [
     const selectedThemeObj = themes[name];
     Object.entries(selectedThemeObj).forEach(([key, value]) => {
       document.documentElement.style.setProperty(key, value);
+    });
+  }
+
+  // Показать все задачи
+  function showAllTasks() {
+    // if (!target.classList.contains('btn', 'btn-primary', 'm-1')) return;
+    const elemListContainer = listContainer.querySelectorAll('li');
+
+    elemListContainer.forEach((el) => {
+      const confirmed = el.querySelector('.custom-control-input').checked;
+
+      if (!confirmed) return;
+      el.classList.add('d-flex');
+      el.style.display = '';
+    });
+  }
+
+  // Показать незавершенные задачи
+  function showUncompletedTasks() {
+    const elemListContainer = listContainer.querySelectorAll('li');
+
+    elemListContainer.forEach((el) => {
+      const confirmed = el.querySelector('.custom-control-input').checked;
+
+      if (!confirmed) return;
+      el.classList.remove('d-flex');
+      el.style.display = 'none';
     });
   }
 })(tasks);
