@@ -98,6 +98,7 @@ const tasks = [
   let lastSelectedTheme = localStorage.getItem('app_theme') || 'default';
 
   // Elements UI
+  let newObjOfTasks;
   const listContainer = document.querySelector('.tasks-list-section .list-group');
   const form = document.forms['addTask'];
   const inputTitle = form.elements['title'];
@@ -108,7 +109,8 @@ const tasks = [
 
   // Events
   setTheme(lastSelectedTheme);
-  renderAllTasks(objOfTasks);
+  // renderAllTasks(arrOfTasks);
+  renderAllTasksLocalStorage();
   form.addEventListener('submit', onFormSubmitHandler);
   listContainer.addEventListener('click', onDeleteHandler);
   listContainer.addEventListener('click', checkboxHandler);
@@ -213,18 +215,28 @@ const tasks = [
       _id: `task-${Math.random()}`,
     };
 
-    objOfTasks[newTask._id] = newTask;
+    // objOfTasks[newTask._id] = newTask;
+
+    newObjOfTasks = JSON.parse(localStorage.getItem('tasks'));
+    newObjOfTasks[newTask._id] = newTask;
+    localStorage.setItem('tasks', JSON.stringify(newObjOfTasks));
 
     return { ...newTask };
   }
 
   // Удалить задачу
   function deleteTask(id) {
-    const { title } = objOfTasks[id];
+    // const { title } = objOfTasks[id];
+    const { title } = newObjOfTasks[id];
     const isConfirm = confirm(`Вы уверены, что хотите удалить задачу: ${title}?`);
 
     if (!isConfirm) return isConfirm;
-    delete objOfTasks[id];
+    // delete objOfTasks[id];
+
+    newObjOfTasks = JSON.parse(localStorage.getItem('tasks'));
+    delete newObjOfTasks[id];
+    localStorage.setItem('tasks', JSON.stringify(newObjOfTasks));
+
     return isConfirm;
   }
 
@@ -253,20 +265,31 @@ const tasks = [
       if (confirmed) {
         parent.style.border = '';
         parent.style.boxShadow = '';
-        objOfTasks[id].completed = false;
+        // objOfTasks[id].completed = false;
+
+        newObjOfTasks = JSON.parse(localStorage.getItem('tasks'));
+        newObjOfTasks[id].completed = false;
+        localStorage.setItem('tasks', JSON.stringify(newObjOfTasks));
       } else {
         parent.style.border = '1px solid #007bff';
         parent.style.boxShadow = '0 0 10px #007bff80';
-        objOfTasks[id].completed = true;
+        // objOfTasks[id].completed = true;
+
+        newObjOfTasks = JSON.parse(localStorage.getItem('tasks'));
+        newObjOfTasks[id].completed = true;
+        localStorage.setItem('tasks', JSON.stringify(newObjOfTasks));
       }
     }
   }
 
   // Добавить предупреждение
   function addAlert(tasksList) {
-    let isEmptyArrOfTasks = Object.entries(tasksList).length === 0;
+    // let isEmptyArrOfTasks = Object.entries(tasksList).length === 0;
+    newObjOfTasks = JSON.parse(localStorage.getItem('tasks'));
+    let isEmptyNewArrOfTasks = Object.entries(newObjOfTasks).length === 0;
 
-    if (!isEmptyArrOfTasks) return;
+    // if (!isEmptyArrOfTasks) return;
+    if (!isEmptyNewArrOfTasks) return;
     const alert = document.createElement('span');
     alert.style.cssText = `
     display: flex;
@@ -337,5 +360,16 @@ const tasks = [
       el.classList.remove('d-flex');
       el.style.display = 'none';
     });
+  }
+
+  // Если локал стораж пустой, записать в него данные
+  function renderAllTasksLocalStorage() {
+    if ('tasks' in localStorage && localStorage.getItem('tasks').length !== 2) {
+      newObjOfTasks = JSON.parse(localStorage.getItem('tasks'));
+      renderAllTasks(newObjOfTasks);
+    } else {
+      localStorage.setItem('tasks', JSON.stringify(objOfTasks));
+      renderAllTasks(arrOfTasks);
+    }
   }
 })(tasks);
