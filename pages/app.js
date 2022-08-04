@@ -1,17 +1,5 @@
 const tasks = [
   {
-    _id: '5d2ca9e2e03d40b326596aa7',
-    completed: true,
-    body: 'Не&nbsp;причиняй никому боли обманом; твои мысли должны быть чистыми и&nbsp;справедливыми, так&nbsp;же как и&nbsp;слова.\r\n',
-    title: 'Честность',
-  },
-  {
-    _id: '5d2ca9e29c8a94095c1288e0',
-    completed: false,
-    body: 'Реши выполнить&nbsp;то, что должно; что решил&nbsp;&mdash; выполняй неуклонно.\r\n',
-    title: 'Решительность',
-  },
-  {
     _id: '5d2ca9e2e03d40b3232496aa7',
     completed: true,
     body: 'Не&nbsp;теряй времени попусту; занимайся чем-то полезным, что приносит пользу тебе и&nbsp;людям.\r\n',
@@ -22,6 +10,18 @@ const tasks = [
     completed: false,
     body: 'Найди каждой вещи своё место, каждому делу&nbsp;&mdash; свое время.\r\n',
     title: 'Порядок',
+  },
+  {
+    _id: '5d2ca9e2e03d40b326596aa7',
+    completed: true,
+    body: 'Не&nbsp;причиняй никому боли обманом; твои мысли должны быть чистыми и&nbsp;справедливыми, так&nbsp;же как и&nbsp;слова.\r\n',
+    title: 'Честность',
+  },
+  {
+    _id: '5d2ca9e29c8a94095c1288e0',
+    completed: false,
+    body: 'Реши выполнить&nbsp;то, что должно; что решил&nbsp;&mdash; выполняй неуклонно.\r\n',
+    title: 'Решительность',
   },
 ];
 
@@ -98,7 +98,7 @@ const tasks = [
   let lastSelectedTheme = localStorage.getItem('app_theme') || 'default';
 
   // Elements UI
-  let newObjOfTasks;
+  let objOfTasksLocalStorage;
   const listContainer = document.querySelector('.tasks-list-section .list-group');
   const form = document.forms['addTask'];
   const inputTitle = form.elements['title'];
@@ -110,7 +110,7 @@ const tasks = [
   // Events
   setTheme(lastSelectedTheme);
   // renderAllTasks(arrOfTasks);
-  renderAllTasksLocalStorage();
+  renderAllTasks();
   form.addEventListener('submit', onFormSubmitHandler);
   listContainer.addEventListener('click', onDeleteHandler);
   listContainer.addEventListener('click', checkboxHandler);
@@ -119,7 +119,7 @@ const tasks = [
   btnShowUncompletedTasks.addEventListener('click', showUncompletedTasks);
 
   // Отрисовать все задачи
-  function renderAllTasks(tasksList) {
+  function renderTasks(tasksList) {
     if (!tasksList) {
       console.error('Передайте список задач!');
       return;
@@ -129,10 +129,18 @@ const tasks = [
 
     const fragment = document.createDocumentFragment();
 
-    Object.values(tasksList).forEach((task) => {
-      const li = listItemTemplate(task);
-      fragment.appendChild(li);
-    });
+    // Object.values(tasksList).forEach((task) => {
+    //   const li = listItemTemplate(task);
+    //   fragment.appendChild(li);
+    // });
+
+    Object.values(tasksList)
+      .reverse()
+      .sort((prev, next) => prev.completed - next.completed)
+      .forEach((task) => {
+        const li = listItemTemplate(task);
+        fragment.appendChild(li);
+      });
 
     listContainer.appendChild(fragment);
   }
@@ -217,9 +225,9 @@ const tasks = [
 
     // objOfTasks[newTask._id] = newTask;
 
-    newObjOfTasks = JSON.parse(localStorage.getItem('tasks'));
-    newObjOfTasks[newTask._id] = newTask;
-    localStorage.setItem('tasks', JSON.stringify(newObjOfTasks));
+    objOfTasksLocalStorage = JSON.parse(localStorage.getItem('tasks'));
+    objOfTasksLocalStorage[newTask._id] = newTask;
+    localStorage.setItem('tasks', JSON.stringify(objOfTasksLocalStorage));
 
     return { ...newTask };
   }
@@ -227,15 +235,15 @@ const tasks = [
   // Удалить задачу
   function deleteTask(id) {
     // const { title } = objOfTasks[id];
-    const { title } = newObjOfTasks[id];
+    const { title } = objOfTasksLocalStorage[id];
     const isConfirm = confirm(`Вы уверены, что хотите удалить задачу: ${title}?`);
 
     if (!isConfirm) return isConfirm;
     // delete objOfTasks[id];
 
-    newObjOfTasks = JSON.parse(localStorage.getItem('tasks'));
-    delete newObjOfTasks[id];
-    localStorage.setItem('tasks', JSON.stringify(newObjOfTasks));
+    objOfTasksLocalStorage = JSON.parse(localStorage.getItem('tasks'));
+    delete objOfTasksLocalStorage[id];
+    localStorage.setItem('tasks', JSON.stringify(objOfTasksLocalStorage));
 
     return isConfirm;
   }
@@ -267,17 +275,17 @@ const tasks = [
         parent.style.boxShadow = '';
         // objOfTasks[id].completed = false;
 
-        newObjOfTasks = JSON.parse(localStorage.getItem('tasks'));
-        newObjOfTasks[id].completed = false;
-        localStorage.setItem('tasks', JSON.stringify(newObjOfTasks));
+        objOfTasksLocalStorage = JSON.parse(localStorage.getItem('tasks'));
+        objOfTasksLocalStorage[id].completed = false;
+        localStorage.setItem('tasks', JSON.stringify(objOfTasksLocalStorage));
       } else {
         parent.style.border = '1px solid #007bff';
         parent.style.boxShadow = '0 0 10px #007bff80';
         // objOfTasks[id].completed = true;
 
-        newObjOfTasks = JSON.parse(localStorage.getItem('tasks'));
-        newObjOfTasks[id].completed = true;
-        localStorage.setItem('tasks', JSON.stringify(newObjOfTasks));
+        objOfTasksLocalStorage = JSON.parse(localStorage.getItem('tasks'));
+        objOfTasksLocalStorage[id].completed = true;
+        localStorage.setItem('tasks', JSON.stringify(objOfTasksLocalStorage));
       }
     }
   }
@@ -285,8 +293,8 @@ const tasks = [
   // Добавить предупреждение
   function addAlert(tasksList) {
     // let isEmptyArrOfTasks = Object.entries(tasksList).length === 0;
-    newObjOfTasks = JSON.parse(localStorage.getItem('tasks'));
-    let isEmptyNewArrOfTasks = Object.entries(newObjOfTasks).length === 0;
+    objOfTasksLocalStorage = JSON.parse(localStorage.getItem('tasks'));
+    let isEmptyNewArrOfTasks = Object.entries(objOfTasksLocalStorage).length === 0;
 
     // if (!isEmptyArrOfTasks) return;
     if (!isEmptyNewArrOfTasks) return;
@@ -362,14 +370,14 @@ const tasks = [
     });
   }
 
-  // Если локал стораж пустой, записать в него данные
-  function renderAllTasksLocalStorage() {
+  // Отрисовать все задачи из database или localstorage
+  function renderAllTasks() {
     if ('tasks' in localStorage && localStorage.getItem('tasks').length !== 2) {
-      newObjOfTasks = JSON.parse(localStorage.getItem('tasks'));
-      renderAllTasks(newObjOfTasks);
+      objOfTasksLocalStorage = JSON.parse(localStorage.getItem('tasks'));
+      renderTasks(objOfTasksLocalStorage);
     } else {
       localStorage.setItem('tasks', JSON.stringify(objOfTasks));
-      renderAllTasks(arrOfTasks);
+      renderTasks(arrOfTasks);
     }
   }
 })(tasks);
