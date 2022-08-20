@@ -18,11 +18,6 @@ Todo List — это интерактивное приложение для с�
   - Стиль CamelCase;
   - Localstorage.
 
-## Установка и запуск проекта:
-Клонировать репозиторий:
-
-    git clone https://github.com/ia-stepanov/todo-list-localstorage.git
-
 ## Языки:
 - JavaScript
 
